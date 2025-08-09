@@ -13,7 +13,7 @@ use ecdsa_core::{
             block_buffer::Eager,
             core_api::{BlockSizeUser, BufferKindUser, CoreProxy, FixedOutputCore},
             generic_array::typenum::{self, IsLess, Le, NonZero},
-            Digest, FixedOutput, HashMarker, OutputSizeUser,
+            Digest, FixedOutput, FixedOutputReset, HashMarker, OutputSizeUser,
         },
         DigestSigner, RandomizedDigestSigner,
     },
@@ -99,7 +99,7 @@ where
 
 impl<D> DigestSigner<D, Signature> for SigningKey
 where
-    D: CoreProxy + Digest + FixedOutput<OutputSize = U32>,
+    D: CoreProxy + Digest + FixedOutput<OutputSize = U32> + BlockSizeUser + FixedOutputReset,
     D::Core: BlockSizeUser
         + BufferKindUser<BufferKind = Eager>
         + Clone
@@ -111,14 +111,14 @@ where
     Le<<D::Core as BlockSizeUser>::BlockSize, typenum::U256>: NonZero,
 {
     fn try_sign_digest(&self, digest: D) -> Result<Signature, Error> {
-        let sig: recoverable::Signature = self.try_sign_digest(digest)?;
+        let sig: recoverable::Signature = <Self as DigestSigner<D, recoverable::Signature>>::try_sign_digest(self, digest)?;
         Ok(sig.into())
     }
 }
 
 impl<D> DigestSigner<D, recoverable::Signature> for SigningKey
 where
-    D: CoreProxy + Digest + FixedOutput<OutputSize = U32>,
+    D: CoreProxy + Digest + FixedOutput<OutputSize = U32> + BlockSizeUser + FixedOutputReset,
     D::Core: BlockSizeUser
         + BufferKindUser<BufferKind = Eager>
         + Clone
@@ -139,7 +139,7 @@ where
 
 impl<D> RandomizedDigestSigner<D, Signature> for SigningKey
 where
-    D: CoreProxy + Digest + FixedOutput<OutputSize = U32>,
+    D: CoreProxy + Digest + FixedOutput<OutputSize = U32> + BlockSizeUser + FixedOutputReset,
     D::Core: BlockSizeUser
         + BufferKindUser<BufferKind = Eager>
         + Clone
@@ -155,14 +155,14 @@ where
         rng: impl CryptoRng + RngCore,
         digest: D,
     ) -> Result<Signature, Error> {
-        let sig: recoverable::Signature = self.try_sign_digest_with_rng(rng, digest)?;
+        let sig: recoverable::Signature = <Self as RandomizedDigestSigner<D, recoverable::Signature>>::try_sign_digest_with_rng(self, rng, digest)?;
         Ok(sig.into())
     }
 }
 
 impl<D> RandomizedDigestSigner<D, recoverable::Signature> for SigningKey
 where
-    D: CoreProxy + Digest + FixedOutput<OutputSize = U32>,
+    D: CoreProxy + Digest + FixedOutput<OutputSize = U32> + BlockSizeUser + FixedOutputReset,
     D::Core: BlockSizeUser
         + BufferKindUser<BufferKind = Eager>
         + Clone
