@@ -24,7 +24,7 @@ ecdsa-core = { version = "0.16.5", package = "ecdsa", optional = true, default-f
 hex-literal = { version = "0.4", optional = true }
 primeorder = { version = "0.13.5", optional = true, path = "../primeorder" }
 rand_core = { version = "0.6", optional = true, default-features = false }
-serdect = { version = "0.2", optional = true, default-features = false }
+serdect = { version = "0.4", optional = true, default-features = false }
 sha2 = { version = "0.10", optional = true, default-features = false }
 
 [dev-dependencies]
