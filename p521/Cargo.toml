@@ -21,7 +21,7 @@ elliptic-curve = { version = "0.13", default-features = false, features = ["hazm
 
 # optional dependencies
 ecdsa-core = { version = "0.16.5", package = "ecdsa", optional = true, default-features = false, features = ["der"] }
-hex-literal = { version = "0.4", optional = true }
+hex-literal = { version = "1.1", optional = true }
 primeorder = { version = "0.13.5", optional = true, path = "../primeorder" }
 rand_core = { version = "0.6", optional = true, default-features = false }
 serdect = { version = "0.2", optional = true, default-features = false }
@@ -30,7 +30,7 @@ sha2 = { version = "0.10", optional = true, default-features = false }
 [dev-dependencies]
 blobby = "0.3"
 ecdsa-core = { version = "0.16", package = "ecdsa", default-features = false, features = ["dev"] }
-hex-literal = "0.4"
+hex-literal = "1.1"
 primeorder = { version = "0.13.3", features = ["dev"], path = "../primeorder" }
 proptest = "1.4"
 rand_core = { version = "0.6", features = ["getrandom"] }
